@@ -1,0 +1,73 @@
+ql> select * 
+    -> from AUTHORS
+    -> INNER join BOOKS
+    -> 
+
+^C
+mysql> show databases;
++-----------------------+
+| Database              |
++-----------------------+
+| Carlos0309$Join       |
+| Carlos0309$carlosJoin |
+| Carlos0309$default    |
+| information_schema    |
+| performance_schema    |
++-----------------------+
+5 rows in set (0.01 sec)
+
+mysql> use  Carlos0309$Join;
+Database changed
+mysql> show tables;
++---------------------------+
+| Tables_in_Carlos0309$Join |
++---------------------------+
+| AUTHORS                   |
+| BOOKS                     |
+| CATEGORIES                |
++---------------------------+
+3 rows in set (0.00 sec)
+
+mysql> select * 
+    -> from AUTHORS
+    -> INNER join BOOKS
+    -> on AUTHORS.ID=BOOKS.AUTHORID;
++----+----------+----+--------+-------+------------+----------+
+| ID | NAME     | ID | NAME   | PRICE | CATEGORYID | AUTHORID |
++----+----------+----+--------+-------+------------+----------+
+|  2 | Author-B |  1 | Book-A |   100 |          1 |        2 |
+|  2 | Author-B |  2 | Book-B |   200 |          2 |        2 |
+|  2 | Author-B |  3 | Book-C |   150 |          3 |        2 |
+|  1 | Author-A |  4 | Book-D |   100 |          3 |        1 |
+|  1 | Author-A |  5 | Book-E |   200 |          3 |        1 |
+|  1 | Author-A |  6 | Book-F |   150 |          4 |        1 |
++----+----------+----+--------+-------+------------+----------+
+6 rows in set (0.00 sec)
+
+mysql> select *from AUTHORSleft join BOOKSon AUTHORS.ID=BOOKS.AUTHORIDwhere BOOKS.AUTHORID is null
+    -> union all
+    -> select * from AUTHORSright join BOOKS on AUTHORS.ID=BOOKS.AUTHORIDwhere AUTHORS.ID is null;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.ID=BOOKS.AUTHORIDwhere BOOKS.AUTHORID is null
+union all
+select * from AUTHORSri' at line 1
+mysql> select *from AUTHORS left join BOOKSon AUTHORS.ID=BOOKS.AUTHORIDwhere BOOKS.AUTHORID is null
+    -> union all
+    -> select * from AUTHORS right join BOOKS on AUTHORS.ID=BOOKS.AUTHORIDwhere AUTHORS.ID is null;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.ID=BOOKS.AUTHORIDwhere BOOKS.AUTHORID is null
+union all
+select * from AUTHORS r' at line 1
+mysql> 
+mysql> select * from AUTHORS left join BOOKS on AUTHORS.ID=BOOKS.AUTHORID where BOOKS.AUTHORID is null
+    -> union all
+    -> select * from AUTHORS right join BOOKS on AUTHORS.ID=BOOKS.AUTHORID where AUTHORS.ID is null;
++------+----------+------+--------+-------+------------+----------+
+| ID   | NAME     | ID   | NAME   | PRICE | CATEGORYID | AUTHORID |
++------+----------+------+--------+-------+------------+----------+
+|    3 | Author-C | NULL | NULL   |  NULL |       NULL |     NULL |
+|   10 | Author-D | NULL | NULL   |  NULL |       NULL |     NULL |
+|   12 | Author-E | NULL | NULL   |  NULL |       NULL |     NULL |
+| NULL | NULL     |    7 | Book-G |   100 |          5 |        5 |
+| NULL | NULL     |    8 | Book-H |   200 |          5 |        6 |
+| NULL | NULL     |    9 | Book-I |   150 |          7 |        8 |
++------+----------+------+--------+-------+------------+----------+
+6 rows in set (0.00 sec)
