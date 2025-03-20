@@ -1,0 +1,79 @@
+
+mysql> show databases;
++-----------------------+
+| Database              |
++-----------------------+
+| Carlos0309$Join       |
+| Carlos0309$carlosJoin |
+| Carlos0309$carrito    |
+| Carlos0309$carro      |
+| Carlos0309$default    |
+| information_schema    |
+| performance_schema    |
++-----------------------+
+7 rows in set (0.01 sec)
+
+mysql> use Carlos0309$carrito;
+Database changed
+mysql>  CREATE TABLE CARRITO1 ( 
+    ->   ID int(18) NOT NULL,
+    ->  articulo1 varchar(15),
+    ->  PRIMARY KEY (ID,articulo1)
+    -> );
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+
+mysql> insert into CARRITO1 values (1,'Azucar'),(2,'Pan'),(3,'Jugo'),(4,'Refresco'),(5,'Harina');
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> CREATE TABLE CARRITO2 (
+    ->     ID int(18) NOT NULL,
+    ->  articulo2 varchar(15),
+    ->  PRIMARY KEY (ID,articulo1)
+    -> );
+ERROR 1072 (42000): Key column 'articulo1' doesn't exist in table
+mysql> CREATE TABLE CARRITO2 (
+    ->     ID int(18) NOT NULL,
+    ->  articulo2 varchar(15),
+    ->  PRIMARY KEY (ID,articulo1)
+    -> );
+ERROR 1072 (42000): Key column 'articulo1' doesn't exist in table
+mysql> CREATE TABLE CARRITO2 (
+    ->     ID int(18) NOT NULL,
+    ->  articulo2 varchar(15),
+    ->  PRIMARY KEY (ID,articulo2)
+    -> );
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+
+mysql> insert into CARRITO2 values (1,'Azucar'),(2,'Pan'),(6,'Mantequilla'),(7,'Queso'),(8,'Manzana');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> Select * from CARRITO1 left join CARRITO2 on CARRITO1,articulo1 = CARRITO2,articulo2
+    -> UNION
+    -> Select * from CARRITO1 right join CARRITO2 on CARRITO1,articulo1 = CARRITO2,articulo2;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= CARRITO2,articulo2
+UNION
+Select * from CARRITO1 right join CARRITO2 on CARRITO' at line 1
+mysql> Select * from CARRITO1 left join CARRITO2 on CARRITO1,articulo1 = CARRITO2,articulo2
+    -> UNION
+    -> Select * from CARRITO1 right join CARRITO2 on CARRITO1,articulo1 = CARRITO2,articulo2;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= CARRITO2,articulo2
+UNION
+Select * from CARRITO1 right join CARRITO2 on CARRITO' at line 1
+mysql> Select * from CARRITO1 left join CARRITO2 on CARRITO1.articulo1 = CARRITO2.articulo2
+    -> UNION
+    -> Select * from CARRITO1 right join CARRITO2 on CARRITO1.articulo1 = CARRITO2.articulo2;
++------+-----------+------+-------------+
+| ID   | articulo1 | ID   | articulo2   |
++------+-----------+------+-------------+
+|    1 | Azucar    |    1 | Azucar      |
+|    2 | Pan       |    2 | Pan         |
+|    3 | Jugo      | NULL | NULL        |
+|    4 | Refresco  | NULL | NULL        |
+|    5 | Harina    | NULL | NULL        |
+| NULL | NULL      |    6 | Mantequilla |
+| NULL | NULL      |    7 | Queso       |
+| NULL | NULL      |    8 | Manzana     |
++------+-----------+------+-------------+
+8 rows in set (0.00 sec)
