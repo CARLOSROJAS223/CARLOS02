@@ -1,0 +1,42 @@
+show databases;
++------------------------+
+| Database               |
++------------------------+
+| Carlos0309$Desarrollo2 |
+| Carlos0309$Join        |
+| Carlos0309$carlosJoin  |
+| Carlos0309$carrito     |
+| Carlos0309$carro       |
+| Carlos0309$default     |
+| information_schema     |
+| performance_schema     |
++------------------------+
+8 rows in set (0.02 sec)
+mysql> use  Carlos0309$Desarrollo2;
+Database changed
+mysql> show tables;
+Empty set (0.00 sec)
+mysql> CREATE TABLE Desarrollo_Etapa (
+    ->     Desarrollo varchar(20) NOT NULL,
+    ->     Etapa int(15) NOT NULL,
+    ->     Finalizado varchar(15) NULL,
+    ->     UNIQUE(Finalizado)
+    -> );
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+mysql> INSERT INTO Desarrollo_Etapa values ('RestAPI',1,'02/22/2025'), ('RestAPI',2,'30/05/2024'), ('RestAPI',3,'29/06/2024'),
+    -> ('Web',1,'28/10/2024'), ('Web',2,'20/11/2024'), ('Web',3,NULL), ('App',1,'30/01/2025'),('App',2,NULL);
+Query OK, 8 rows affected (0.01 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+mysql> SELECT
+    ->     Desarrollo
+    -> FROM 
+    ->     Desarrollo_Etapa
+    -> WHERE 
+    ->     Finalizado IS NULL;
++------------+
+| Desarrollo |
++------------+
+| Web        |
+| App        |
++------------+
+2 rows in set (0.00 sec)
