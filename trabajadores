@@ -1,0 +1,46 @@
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+mysql> show databases;
++-------------------------+
+| Database                |
++-------------------------+
+| Carlos0309$Desarrollo2  |
+| Carlos0309$Directorio   |
+| Carlos0309$Join         |
+| Carlos0309$Trabajadores |
+| Carlos0309$carlosJoin   |
+| Carlos0309$carrito      |
+| Carlos0309$carro        |
+| Carlos0309$default      |
+| information_schema      |
+| performance_schema      |
++-------------------------+
+10 rows in set (1.03 sec)
+mysql> use Carlos0309$Trabajadores;
+Database changed
+mysql> show tables;
++-----------------------------------+
+| Tables_in_Carlos0309$Trabajadores |
++-----------------------------------+
+| id_trabajadores                   |
++-----------------------------------+
+1 row in set (0.01 sec)
+mysql> INSERT INTO id_trabajadores VALUES  (1001,NULL,'Presidente'), (2002,'1001','Director'), (3003,'1001','Gerente'),
+    -> (4004,'2002','Ingeniero'),(5005,'2002','Contador'),(6006,'2002','Administrador');
+ERROR 1062 (23000): Duplicate entry '1001-Presidente' for key 'id_trabajadores.PRIMARY'
+mysql> SELECT e.id_trabajadores, e.id_Jefe, e.Puesto, CASE WHEN e.Id_gerente IS NULL THEN 0 WHEN e.id_Jefe = 1001 THEN 1
+    -> ELSE 2 END AS Nivel  FROM id_trabajadores e ORDER BY Nivel, id_Jefe;
+ERROR 1054 (42S22): Unknown column 'e.Id_gerente' in 'field list'
+mysql> SELECT e.id_trabajadores, e.id_Jefe, e.Puesto, CASE WHEN e.id_Jefe IS NULL THEN 0 WHEN e.id_Jefe = 1001 THEN 1
+    -> ELSE 2 END AS Nivel  FROM id_trabajadores e ORDER BY Nivel, id_Jefe;
++-----------------+---------+---------------+-------+
+| id_trabajadores | id_Jefe | Puesto        | Nivel |
++-----------------+---------+---------------+-------+
+|            1001 |    NULL | Presidente    |     0 |
+|            2002 |    1001 | Director      |     1 |
+|            3003 |    1001 | Gerente       |     1 |
+|            4004 |    2002 | Ingeniero     |     2 |
+|            5005 |    2002 | Contador      |     2 |
+|            6006 |    2002 | Administrador |     2 |
++-----------------+---------+---------------+-------+
+6 rows in set (0.01 sec)
