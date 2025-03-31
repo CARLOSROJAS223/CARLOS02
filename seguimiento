@@ -1,0 +1,61 @@
+r version for the right syntax to use near 'databasea' at line 1
+mysql> show databases;
++-------------------------+
+| Database                |
++-------------------------+
+| Carlos0309$Directorio   |
+| Carlos0309$Join         |
+| Carlos0309$Trabajadores |
+| Carlos0309$carlosJoin   |
+| Carlos0309$carrito      |
+| Carlos0309$carro        |
+| Carlos0309$casos        |
+| Carlos0309$default      |
+| Carlos0309$encargo      |
+| Carlos0309$licencia     |
+| Carlos0309$promedio     |
+| Carlos0309$seguimiento  |
+| information_schema      |
+| performance_schema      |
++-------------------------+
+14 rows in set (0.07 sec)
+
+mysql> use| Carlos0309$seguimiento ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '| Carlos0309$seguimiento' at line 1
+mysql> use  Carlos0309$seguimiento;
+Database changed
+mysql> CREATE TABLE Seguimiento(
+    ->     Fecha VARCHAR(50) NOT NULL,
+    ->     Ajuste INT(15) NOT NULL,
+    ->     PRIMARY KEY(Fecha, Ajuste)
+    -> );
+Query OK, 0 rows affected, 1 warning (0.04 sec)
+mysql> INSERT INTO 
+    -> Seguimiento
+    -> VALUES
+    -> ('03/01/2025', 100),('04/01/2025', 75),('05/01/2025', -150),('06/01/2025', 50),
+    -> ('07/01/2025', -70);
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+mysql> SET 
+    ->     @Inventario = 0;
+Query OK, 0 rows affected (0.00 sec)
+mysql> 
+mysql> SELECT 
+    ->     Fecha,
+    ->     Ajuste,
+    ->     @Inventario := @Inventario + Ajuste AS Inventario
+    -> FROM 
+    ->     Seguimiento
+    -> ORDER BY 
+    ->     Fecha;
++------------+--------+------------+
+| Fecha      | Ajuste | Inventario |
++------------+--------+------------+
+| 03/01/2025 |    100 |        100 |
+| 04/01/2025 |     75 |        175 |
+| 05/01/2025 |   -150 |         25 |
+| 06/01/2025 |     50 |         75 |
+| 07/01/2025 |    -70 |          5 |
++------------+--------+------------+
+5 rows in set, 1 warning (0.00 sec)
