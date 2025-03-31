@@ -1,0 +1,80 @@
+show daWelcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 4655771
+Server version: 8.0.40 Source distribution
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+mysql> show databases;
++-------------------------+
+| Database                |
++-------------------------+
+| Carlos0309$Desarrollo2  |
+| Carlos0309$Directorio   |
+| Carlos0309$Join         |
+| Carlos0309$Trabajadores |
+| Carlos0309$carlosJoin   |
+| Carlos0309$carrito      |
+| Carlos0309$carro        |
+| Carlos0309$default      |
+| Carlos0309$encargo      |
+| Carlos0309$licencia     |
+| information_schema      |
+| performance_schema      |
++-------------------------+
+12 rows in set (0.03 sec)
+mysql> use Carlos0309$encargo;
+Database changed
+mysql> hswo tables;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL serv
+er version for the right syntax to use near 'hswo tables' at line 1
+mysql> CREATE TABLE encargo (
+    ->     Id_cliente INT(16) NOT NULL,
+    ->     Id_encargo INT(16) NOT NULL,
+    ->     Estado_Destino VARCHAR(16) NOT NULL,
+    ->     precio VARCHAR(50) NOT NULL,
+    ->     PRIMARY KEY(Id_pedido)
+    -> );
+ERROR 1072 (42000): Key column 'Id_pedido' doesn't exist in table
+mysql> CREATE TABLE encargo (
+    ->     Id_cliente INT(16) NOT NULL,
+    ->     Id_encargo INT(16) NOT NULL,
+    ->     Estado_Destino VARCHAR(16) NOT NULL,
+    ->     precio VARCHAR(50) NOT NULL,
+    ->     PRIMARY KEY(Id_pedido)
+    -> );
+ERROR 1072 (42000): Key column 'Id_pedido' doesn't exist in table
+mysql> CREATE TABLE encargo (
+    ->     Id_cliente INT(16) NOT NULL,
+    ->     Id_encargo INT(16) NOT NULL,
+    ->     Estado_Destino VARCHAR(16) NOT NULL,
+    ->     precio VARCHAR(50) NOT NULL,
+    ->     PRIMARY KEY(Id_encargo)
+    -> );
+Query OK, 0 rows affected, 2 warnings (0.03 sec)
+
+mysql> INSERT INTO encargo VALUES 
+    -> (1001,1,'JAL','$987'), (1001,2,'CDMX','$400'), (1001,3,'CDMX','$545'),
+    -> (1001,4,'CDMX','$321'),(2002,5,'MTY','$324'),(3003,6,'JAL','$931'),
+    -> (4004,7,'JAL','$876'),(5005,8,'CDMX','$567');
+Query OK, 8 rows affected (0.01 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> SELECT o.Id_cliente, o.Id_encargo, o.Estado_Destino, o.precio
+    -> FROM encargo o
+    -> WHERE o.Estado_Destino = 'CDMX'
+    -> AND o.Id_cliente IN (
+    ->     SELECT Id_cliente
+    ->     FROM encargo
+    ->     WHERE Estado_Destino = 'JAL'
+    -> )
+    -> ORDER BY o.Id_cliente, o.Id_encargo;
++------------+------------+----------------+--------+
+| Id_cliente | Id_encargo | Estado_Destino | precio |
++------------+------------+----------------+--------+
+|       1001 |          2 | CDMX           | $400   |
+|       1001 |          3 | CDMX           | $545   |
+|       1001 |          4 | CDMX           | $321   |
++------------+------------+----------------+--------+
+3 rows in set (0.00 sec)
