@@ -1,0 +1,88 @@
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 10012654
+Server version: 8.0.40 Source distribution
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+mysql> CREATE TABLE Licencias (
+    Id_Empleado int(18) NOT NULL,
+    Licencia Varchar(14) NOT NULL,
+    PRIMARY KEY(Id_Empleado,Licencia)
+);CREATE TABLE Licencias (
+^C
+mysql>     Id_Empleado int(18) NOT NULL,
+    ->     Licencia Varchar(14) NOT NULL,
+    ->     PRIMARY KEY(Id_Empleado,Licencia)
+    -> 
+^C
+mysql> show databases;
++-------------------------+
+| Database                |
++-------------------------+
+| Carlos0309$Directorio   |
+| Carlos0309$Join         |
+| Carlos0309$Trabajadores |
+| Carlos0309$carlosJoin   |
+| Carlos0309$carrito      |
+| Carlos0309$carro        |
+| Carlos0309$casos        |
+| Carlos0309$default      |
+| Carlos0309$digitos      |
+| Carlos0309$encargo      |
+| Carlos0309$licencia     |
+| Carlos0309$licencias    |
+| Carlos0309$marte        |
+| Carlos0309$promedio     |
+| Carlos0309$seguimiento  |
+| Carlos0309$trabajo      |
+| information_schema      |
+| performance_schema      |
++-------------------------+
+18 rows in set (0.03 sec)
+
+mysql> use Carlos0309$licencias ;
+Database changed
+mysql> CREATE TABLE Licencias (
+    ->     Id_Empleado int(18) NOT NULL,
+    ->     Licencia Varchar(14) NOT NULL,
+    ->     PRIMARY KEY(Id_Empleado,Licencia)
+    -> );
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+
+mysql> INSERT INTO Licencias VALUES
+    -> (1001, 'Tipo A'), (1001, 'Tipo B'), (1001, 'Tipo C'),
+    -> (2002, 'Tipo A'), (2002, 'Tipo B'), (2002, 'Tipo C'),
+    -> (3003, 'Tipo A'), (3003, 'Tipo D'), (4004, 'Tipo A'),
+    -> (4004, 'Tipo B'), (4004, 'Tipo D'), (5005, 'Tipo A'),
+    -> (5005, 'Tipo B'), (5005, 'Tipo D');
+Query OK, 14 rows affected (0.01 sec)
+Records: 14  Duplicates: 0  Warnings: 0
+
+mysql> SELECT 
+    ->     l1.Id_Empleado AS Id_Empleado_1,
+    ->     l2.Id_Empleado AS Id_Empleado_2,
+    ->     COUNT(*) AS Coincidencias
+    -> FROM
+    ->     Licencias l1
+    -> JOIN
+    ->     Licencias l2
+    -> ON 
+    ->     l1.Licencia = l2.Licencia
+    -> AND 
+    ->     l1.Id_Empleado != l2.Id_Empleado
+    -> GROUP BY 
+    ->     l1.Id_Empleado, l2.Id_Empleado
+    -> HAVING 
+    ->     Coincidencias = 3;
++---------------+---------------+---------------+
+| Id_Empleado_1 | Id_Empleado_2 | Coincidencias |
++---------------+---------------+---------------+
+|          2002 |          1001 |             3 |
+|          1001 |          2002 |             3 |
+|          5005 |          4004 |             3 |
+|          4004 |          5005 |             3 |
++---------------+---------------+---------------+
+4 rows in set (0.00 sec)
+mysql> 
