@@ -1,0 +1,47 @@
+| Carlos0309$trabajo     |
+| information_schema     |
+| performance_schema     |
++------------------------+
+22 rows in set (0.03 sec)
+mysql> use Carlos0309$asientos;
+Database changed
+mysql> CREATE TABLE Asientos( 
+    -> num_asiento INTEGER 
+    -> );
+Query OK, 0 rows affected (0.08 sec)
+mysql> INSERT INTO Asientos VALUES 
+    -> (7),(13),(14),(15),(27),(28),(29),(30), (31),(32),(33),(34),(35),(52),(53),(54);
+Query OK, 16 rows affected (0.02 sec)
+Records: 16  Duplicates: 0  Warnings: 0
+mysql> SELECT 
+    ->     (MAX(num_asiento) - MIN(num_asiento) + 1) - COUNT(*) AS disponibles FROM Asientos;
++-------------+
+| disponibles |
++-------------+
+|          32 |
++-------------+
+1 row in set (0.01 sec)
+mysql> SELECT  COUNT(CASE WHEN num_asiento % 2 = 0 THEN 1 END) AS pares, COUNT(CASE WHEN num_asiento % 2 != 0 THEN 1 END) AS impares
+    -> FROM Asientos; SET @prev := 0;
++-------+---------+
+| pares | impares |
++-------+---------+
+|     7 |       9 |
++-------+---------+
+1 row in set (0.01 sec)
+Query OK, 0 rows affected (0.00 sec)
+mysql> SELECT espacio_inicio, espacio_final
+    -> FROM ( SELECT @prev + 1 AS espacio_inicio,  num_asiento - 1 AS espacio_final,
+    ->        @prev := num_asiento FROM Asientos
+    ->     ORDER BY num_asiento ) subquery
+    -> WHERE espacio_inicio <= espacio_final;
++----------------+---------------+
+| espacio_inicio | espacio_final |
++----------------+---------------+
+|              1 |             6 |
+|              8 |            12 |
+|             16 |            26 |
+|             36 |            51 |
++----------------+---------------+
+4 rows in set, 1 warning (0.02 sec)
+mysql> 
