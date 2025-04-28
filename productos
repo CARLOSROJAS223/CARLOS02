@@ -1,0 +1,38 @@
+ysql> useCarlos0309$productos ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'useCarlos0309$productos' at line 1
+mysql> uase Carlos0309$productos ;
+Carlos0309$productos ;
+^C
+mysql> CREATE TABLE Productos (
+    ->     Producto varchar(15) NOT NULL,
+    ->     Cantidad int NOT NULL,
+    ->     PRIMARY KEY(Producto, Cantidad)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO Productos values
+    -> ('Lapiz',3),('Borrador',4),('Cuaderno',2);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> SELECT 'Lápiz' AS Productos, 1 AS Cantidad FROM (SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3) AS t
+    -> UNION ALL
+    -> SELECT 'Borrador', 1 FROM (SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4) AS t
+    -> UNION ALL
+    -> SELECT 'Cuaderno', 1 FROM (SELECT 1 UNION ALL SELECT 2) AS t;
++-----------+----------+
+| Productos | Cantidad |
++-----------+----------+
+| Lápiz     |        1 |
+| Lápiz     |        1 |
+| Lápiz     |        1 |
+| Borrador  |        1 |
+| Borrador  |        1 |
+| Borrador  |        1 |
+| Borrador  |        1 |
+| Cuaderno  |        1 |
+| Cuaderno  |        1 |
++-----------+----------+
+9 rows in set (0.00 sec)
+
+mysql> 
