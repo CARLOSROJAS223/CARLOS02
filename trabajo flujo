@@ -1,0 +1,70 @@
+
+mysql> show databases;
++------------------------+
+| Database               |
++------------------------+
+| Carlos0309$Join        |
+| Carlos0309$carro       |
+| Carlos0309$casos       |
+| Carlos0309$default     |
+| Carlos0309$degrupos    |
+| Carlos0309$deliverado  |
+| Carlos0309$digitos     |
+| Carlos0309$encargo     |
+| Carlos0309$flutrabajo  |
+| Carlos0309$licencia    |
+| Carlos0309$licencias   |
+| Carlos0309$marte       |
+| Carlos0309$partidas    |
+| Carlos0309$prome       |
+| Carlos0309$promedio    |
+| Carlos0309$prueba      |
+| Carlos0309$seguimiento |
+| Carlos0309$trabajo     |
+| information_schema     |
+| performance_schema     |
++------------------------+
+20 rows in set (0.04 sec)
+mysql> use Carlos0309$flutrabajo;
+Database changed
+mysql> CREATE TABLE FlujoTrabajo ( Flujo varchar(20) NOT NULL, Paso int NOT NULL,
+    ->     Estado varchar(15) NOT NULL, PRIMARY KEY(Flujo, paso)
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+mysql> INSERT INTO FlujoTrabajo VALUES
+    -> ('Alpha', 1, 'Error'), ('Alpha', 2, 'Finalizado'), ('Alpha', 3, 'Corriendo'),
+    -> ('Bravo', 1, 'Finalizado'),('Bravo', 2, 'Finalizado'), ('Charlie', 1, 'Corriendo'),
+    -> ('Charlie', 2, 'Corriendo'), ('Delta', 1, 'Error'), ('Delta', 2, 'Error'),
+    -> ('Echo', 1, 'Corriendo'),('Echo', 2, 'Finalizado');
+Query OK, 11 rows affected (0.02 sec)
+Records: 11  Duplicates: 0  Warnings: 0
+mysql> ELECT Flujo,
+    ->     CASE 
+    ->         WHEN COUNT(DISTINCT Estado) = 1 THEN MAX(Estado)
+    ->         WHEN SUM(Estado = 'Error') > 0 THEN 'Indeterminado'
+    ->         ELSE 'Corriendo'
+    ->     END AS Estado
+    -> FROM FlujoTrabajo
+    -> GROUP BY Flujo;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ELECT Flujo,
+    CASE 
+        WHEN COUNT(DISTINCT Estado) = 1 THEN MAX(Estado)
+' at line 1
+mysql> SELECT Flujo,CASE  WHEN COUNT(DISTINCT Estado) = 1 THEN MAX(Estado)
+    ->         WHEN SUM(Estado = 'Error') > 0 THEN 'Indeterminado'
+    ->         ELSE 'Corriendo'
+    ->     END AS Estado
+    -> FROM FlujoTrabajo
+    -> GROUP BY Flujo
+    -> ;
++---------+---------------+
+| Flujo   | Estado        |
++---------+---------------+
+| Alpha   | Indeterminado |
+| Bravo   | Finalizado    |
+| Charlie | Corriendo     |
+| Delta   | Error         |
+| Echo    | Corriendo     |
++---------+---------------+
+5 rows in set (0.00 sec)
+mysql> 
