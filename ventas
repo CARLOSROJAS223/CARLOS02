@@ -1,0 +1,73 @@
+HOW DATWelcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 45651047
+Server version: 8.0.40 Source distribution
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databaseS;
++--------------------------+
+| Database                 |
++--------------------------+
+| Carlos0309$Join          |
+| Carlos0309$PrecioDEMANDA |
+| Carlos0309$VENTAS        |
+| Carlos0309$asientos      |
+| Carlos0309$carro         |
+| Carlos0309$casos         |
+| Carlos0309$default       |
+| Carlos0309$degrupos      |
+| Carlos0309$deliverado    |
+| Carlos0309$digitos       |
+| Carlos0309$encargo       |
+| Carlos0309$flutrabajo    |
+| Carlos0309$licencia      |
+| Carlos0309$licencias     |
+| Carlos0309$marte         |
+| Carlos0309$ocurrencias   |
+| Carlos0309$partidas      |
+| Carlos0309$periodo       |
+| Carlos0309$producto2     |
+| Carlos0309$productos     |
+| Carlos0309$prome         |
+| Carlos0309$promedio      |
+| Carlos0309$prueba        |
+| Carlos0309$seguimiento   |
+| Carlos0309$trabajo       |
+| information_schema       |
+| performance_schema       |
++--------------------------+
+27 rows in set (0.06 sec)
+mysql> use  Carlos0309$VENTAS;
+Database changed
+mysql> CREATE TABLE Ventas (
+    ->     Id_Orden int NOT NULL,
+    ->     Id_Cliente int NOT NULL,
+    ->     Fecha varchar(15) NOT NULL,
+    ->     Total int NOT NULL,
+    ->     Estado Varchar(15),
+    ->     PRIMARY KEY(Id_Orden)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+mysql> INSERT INTO Ventas Values (1, 1001, '01/01/2025', 100, 'JAL'), (2, 1001, '01/01/2025', 150, 'JAL'),
+    -> (3, 1001, '01/01/2025', 75, 'JAL'), (4, 1001, '02/01/2025', 100, 'JAL'),
+    -> (5, 1001, '03/01/2025', 100, 'JAL'), (6, 2002, '02/01/2025', 75, 'JAL'),
+    -> (7, 2002, '02/01/2025', 150, 'JAL'), (8, 3003, '01/01/2025', 100, 'CDMX'),
+    -> (9, 3003, '02/01/2025', 100, 'CDMX'), (10, 3003, '03/01/2025', 100, 'CDMX'),
+    -> (11, 4004, '04/01/2025', 100, 'CDMX'), (12, 4004, '05/01/2025', 50, 'CDMX'),
+    -> (13, 4004, '05/01/2025', 100, 'CDMX');
+Query OK, 13 rows affected (0.01 sec)
+Records: 13  Duplicates: 0  Warnings: 0
+mysql> SELECT DISTINCT Estado FROM Ventas
+    -> GROUP BY Estado HAVING AVG(Total) > 100;
++--------+
+| Estado |
++--------+
+| JAL    |
++--------+
+1 row in set (0.00 sec)
