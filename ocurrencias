@@ -1,0 +1,72 @@
+CREATE TABLE Registros (
+    Proceso varchar(15) NOT NULL,
+    Mensaje varchar(50) NOT NULL,
+    Ocurrencia int NOT NULL,
+    PRIMARY KEY(Ocurrencia)
+);
+
+INSERT INTO Registros Values ('Web', 'Error: No se puede dividir por 0', 3), 
+('RestAPI', 'Error: Fallo la conversión',  5), ('App', 'Error: Fallo la conversión',  7),
+('RestAPI', 'Error: Error sin identificar', 9), ('Web', 'Error: Error sin identificar', 1),
+('App', 'Error: Error sin identificar', 10),('Web', 'Estado Completado', 8),
+('RestAPI', 'Estado Completado', 6);
+
+SELECT Proceso, Mensaje, MAX(Ocurrencia) AS Ocurrencia FROM Registros
+GROUP BY Mensaje ORDER BY Proceso;
+
+
+
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 45629856
+Server version: 8.0.40 Source distribution
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+mysql> show databases;
++------------------------+
+| Database               |
++------------------------+
+| Carlos0309$Join        |
+| Carlos0309$asientos    |
+| Carlos0309$carro       |
+| Carlos0309$casos       |
+| Carlos0309$default     |
+| Carlos0309$degrupos    |
+| Carlos0309$deliverado  |
+| Carlos0309$digitos     |
+| Carlos0309$encargo     |
+| Carlos0309$flutrabajo  |
+| Carlos0309$licencia    |
+| Carlos0309$licencias   |
+| Carlos0309$marte       |
+| Carlos0309$ocurrencias |
+| Carlos0309$partidas    |
+| Carlos0309$periodo     |
+| Carlos0309$producto2   |
+| Carlos0309$productos   |
+| Carlos0309$prome       |
+| Carlos0309$promedio    |
+| Carlos0309$prueba      |
+| Carlos0309$seguimiento |
+| Carlos0309$trabajo     |
+| information_schema     |
+| performance_schema     |
++------------------------+
+25 rows in set (0.09 sec)
+
+mysql> show table;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> use Carlos0309$ocurrencias;
+Database changed
+mysql> show tables;
++----------------------------------+
+| Tables_in_Carlos0309$ocurrencias |
++----------------------------------+
+| Registros                        |
++----------------------------------+
+1 row in set (0.01 sec)
+mysql> 
