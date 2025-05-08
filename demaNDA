@@ -1,0 +1,69 @@
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 45643522
+Server version: 8.0.40 Source distribution
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+mysql> show databases;
++--------------------------+
+| Database                 |
++--------------------------+
+| Carlos0309$Join          |
+| Carlos0309$PrecioDEMANDA |
+| Carlos0309$asientos      |
+| Carlos0309$carro         |
+| Carlos0309$casos         |
+| Carlos0309$default       |
+| Carlos0309$degrupos      |
+| Carlos0309$deliverado    |
+| Carlos0309$digitos       |
+| Carlos0309$encargo       |
+| Carlos0309$flutrabajo    |
+| Carlos0309$licencia      |
+| Carlos0309$licencias     |
+| Carlos0309$marte         |
+| Carlos0309$ocurrencias   |
+| Carlos0309$partidas      |
+| Carlos0309$periodo       |
+| Carlos0309$producto2     |
+| Carlos0309$productos     |
+| Carlos0309$prome         |
+| Carlos0309$promedio      |
+| Carlos0309$prueba        |
+| Carlos0309$seguimiento   |
+| Carlos0309$trabajo       |
+| information_schema       |
+| performance_schema       |
++--------------------------+
+26 rows in set (0.11 sec)
+
+mysql> use  Carlos0309$PrecioDEMANDA;
+Database changed
+mysql> INSERT INTO Productos2 Values (1001, '01-01-2025', 19.99), (1001, '04-15-2025', 59.99),
+    -> (1001, '06-08-2025', 79.99), (2002, '04-17-2025', 39.99), (2002, '05-19-2025', 59.99);
+ERROR 1062 (23000): Duplicate entry '1001-01-01-2025' for key 'Productos2.PRIMARY'
+mysql> CREATE TABLE Productos2 (
+    ->     Id_Producto int NOT NULL,
+    ->     Fecha varchar(15) NOT NULL,
+    ->     Precio float NOT NULL,
+    ->     Primary key(Id_Producto,Fecha)
+    -> );
+ERROR 1050 (42S01): Table 'Productos2' already exists
+mysql> INSERT INTO Productos2 Values (1001, '01-01-2025', 19.99), (1001, '04-15-2025', 59.99),
+    -> (1001, '06-08-2025', 79.99), (2002, '04-17-2025', 39.99), (2002, '05-19-2025', 59.99);
+ERROR 1062 (23000): Duplicate entry '1001-01-01-2025' for key 'Productos2.PRIMARY'
+mysql> SELECT Id_Producto, Fecha, Precio FROM Productos2 WHERE (Id_Producto, Fecha) IN (
+    -> SELECT Id_Producto, MAX(Fecha) FROM Productos2 GROUP BY Id_Producto
+    -> );
++-------------+------------+--------+
+| Id_Producto | Fecha      | Precio |
++-------------+------------+--------+
+|        1001 | 06-08-2025 |  79.99 |
+|        2002 | 05-19-2025 |  59.99 |
++-------------+------------+--------+
+2 rows in set (0.02 sec)
+mysql
