@@ -1,0 +1,83 @@
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 92942451
+Server version: 8.0.40 Source distribution
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+mysql> show databases;
++--------------------------+
+| Database                 |
++--------------------------+
+| Carlos0309$Agrupaciones  |
+| Carlos0309$Join          |
+| Carlos0309$PrecioDEMANDA |
+| Carlos0309$VENTAS        |
+| Carlos0309$asientos      |
+| Carlos0309$carro         |
+| Carlos0309$casos         |
+| Carlos0309$default       |
+| Carlos0309$degrupos      |
+| Carlos0309$deliverado    |
+| Carlos0309$digitos       |
+| Carlos0309$encargo       |
+| Carlos0309$flutrabajo    |
+| Carlos0309$licencia      |
+| Carlos0309$licencias     |
+| Carlos0309$marte         |
+| Carlos0309$ocurrencias   |
+| Carlos0309$partidas      |
+| Carlos0309$periodo       |
+| Carlos0309$producto2     |
+| Carlos0309$productos     |
+| Carlos0309$prome         |
+| Carlos0309$promedio      |
+| Carlos0309$prueba        |
+| Carlos0309$seguimiento   |
+| Carlos0309$trabajo       |
+| information_schema       |
+| performance_schema       |
++--------------------------+
+28 rows in set (0.09 sec)
+
+mysql> use Carlos0309$Agrupaciones;
+Database changed
+mysql> CREATE TABLE AGRUPACION (
+    ->     Paso INT(16) NOT NULL,
+    ->     Estado VARCHAR(16) NOT NULL,
+    ->     PRIMARY  KEY(Paso, Estado)
+    -> );
+Query OK, 0 rows affected, 1 warning (0.06 sec)
+
+mysql> 
+mysql> 
+mysql> INSERT INTO AGRUPACION
+    -> VALUES
+    -> (1, 'Paso'), (2, 'Paso'),
+    -> (3, 'Paso'), (4, 'Paso'),
+    -> (5, 'Fallo'), (6, 'Fallo'),
+    -> (7, 'Fallo'), (8, 'Fallo'),(9, 'Fallo'),
+    -> (10, 'Paso'), (11, 'Paso'), (12, 'Paso');
+Query OK, 12 rows affected (0.02 sec)
+Records: 12  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> 
+mysql> SELECT  MIN(Paso) AS `Paso Min`,
+    ->   MAX(Paso) AS `Paso Max`,  Estado,
+    ->   COUNT(*) AS Cuenta
+    -> FROM (
+    ->   SELECT  Paso, Estado,  Paso - ROW_NUMBER() OVER (PARTITION BY Estado ORDER BY Paso) AS grupo
+    ->   FROM AGRUPACION
+    -> ) AS agrupado
+    -> GROUP BY Estado, grupo ORDER BY `Paso Min`;
++----------+----------+--------+--------+
+| Paso Min | Paso Max | Estado | Cuenta |
++----------+----------+--------+--------+
+|        1 |        4 | Paso   |      4 |
+|        5 |        9 | Fallo  |      5 |
+|       10 |       12 | Paso   |      3 |
++----------+----------+--------+--------+
+3 rows in set (0.01 sec)
+mysql> 
